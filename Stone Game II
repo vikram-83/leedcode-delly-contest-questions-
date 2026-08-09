@@ -1,0 +1,66 @@
+Input: piles = [2,7,9,4,4]
+
+Output: 10
+
+Explanation:
+
+If Alice takes one pile at the beginning, Bob takes two piles, then Alice takes 2 piles again. Alice can get 2 + 4 + 4 = 10 stones in total.
+If Alice takes two piles at the beginning, then Bob can take all three piles left. In this case, Alice get 2 + 7 = 9 stones in total.
+So we return 10 since it's larger.
+
+class Solution {
+public:
+
+    vector<int> suffix;
+    vector<vector<int>> dp;
+    int n;
+
+    int solve(int i, int M) {
+
+        // No piles left
+        if (i >= n)
+            return 0;
+
+        // Can take all remaining piles
+        if (2 * M >= n - i)
+            return suffix[i];
+
+        if (dp[i][M] != -1)
+            return dp[i][M];
+
+        int best = 0;
+
+        // Try taking X piles
+        for (int X = 1; X <= 2 * M; X++) {
+
+            int taken = suffix[i] - suffix[i + X];
+
+            int newM = max(M, X);
+
+            int opponent = solve(i + X, newM);
+
+            int current = taken
+                        + (suffix[i + X] - opponent);
+
+            best = max(best, current);
+        }
+
+        return dp[i][M] = best;
+    }
+
+    int stoneGameII(vector<int>& piles) {
+
+        n = piles.size();
+
+        suffix.resize(n + 1, 0);
+
+        // Build suffix sum
+        for (int i = n - 1; i >= 0; i--) {
+            suffix[i] = suffix[i + 1] + piles[i];
+        }
+
+        dp.assign(n, vector<int>(n + 1, -1));
+
+        return solve(0, 1);
+    }
+};
