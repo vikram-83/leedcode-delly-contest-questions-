@@ -1,0 +1,55 @@
+class Solution {
+public:
+    int maxNumberOfFamilies(int n, vector<vector<int>>& reservedSeats) {
+        unordered_map<int, int> rows;
+
+        // Store reserved seats as bits
+        for (auto &seat : reservedSeats) {
+            int row = seat[0];
+            int col = seat[1];
+
+            // Only seats 2 to 9 matter
+            if (col >= 2 && col <= 9) {
+                rows[row] |= (1 << col);
+            }
+        }
+
+        // Rows without any reservation can fit 2 groups
+        long long ans = 2LL * (n - rows.size());
+
+        for (auto &[row, mask] : rows) {
+
+            // Seats 2,3,4,5
+            bool left = !(mask & (1 << 2)) &&
+                        !(mask & (1 << 3)) &&
+                        !(mask & (1 << 4)) &&
+                        !(mask & (1 << 5));
+
+            // Seats 6,7,8,9
+            bool right = !(mask & (1 << 6)) &&
+                         !(mask & (1 << 7)) &&
+                         !(mask & (1 << 8)) &&
+                         !(mask & (1 << 9));
+
+            // Seats 4,5,6,7
+            bool middle = !(mask & (1 << 4)) &&
+                          !(mask & (1 << 5)) &&
+                          !(mask & (1 << 6)) &&
+                          !(mask & (1 << 7));
+
+            if (left && right)
+                ans += 2;
+            else if (left || middle || right)
+                ans += 1;
+        }
+
+        return ans;
+    }
+};
+
+
+
+
+Input: n = 3, reservedSeats = [[1,2],[1,3],[1,8],[2,6],[3,1],[3,10]]
+Output: 4
+Explanation: The figure above shows an optimal allocation of four groups. Seats marked in blue are already reserved, and each set of four contiguous seats marked in orange is assigned to one group.
