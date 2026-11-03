@@ -6,7 +6,7 @@ The goal is not just to solve problems, but to understand the **optimal approach
 
 ## 🎯 Goals
 
-* Solve LeetCode problems consistently
+* Solve LeetCode problems consistentl
 * Master advanced DSA patterns
 * Improve problem-solving and logical thinking
 * Learn optimized `O(n)`, `O(n log n)` and advanced solutions
