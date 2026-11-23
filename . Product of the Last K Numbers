@@ -1,0 +1,35 @@
+["ProductOfNumbers","add","add","add","add","add","getProduct","getProduct","getProduct","add","getProduct"]
+[[],[3],[0],[2],[5],[4],[2],[3],[4],[8],[2]]
+
+Output
+[null,null,null,null,null,null,20,40,0,null,32]
+
+
+class ProductOfNumbers {
+    vector<int> prefix;
+
+public:
+    ProductOfNumbers() {
+        prefix.push_back(1);
+    }
+    
+    void add(int num) {
+        if (num == 0) {
+            prefix.clear();
+            prefix.push_back(1);
+        }
+        else {
+            prefix.push_back(prefix.back() * num);
+        }
+    }
+    
+    int getProduct(int k) {
+        int n = prefix.size();
+
+        if (k >= n) {
+            return 0;
+        }
+
+        return prefix[n - 1] / prefix[n - k - 1];
+    }
+};
